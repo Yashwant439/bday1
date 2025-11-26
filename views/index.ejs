@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Epic Birthday Surprise! 🎉</title>
+
+    <!-- Icons & fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+
+    <!-- Swiper if you still need it -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+    <!-- Your styles -->
+    <link rel="stylesheet" href="/styles/style.css"/>
+</head>
+<body>
+    <!-- Photo-based Background -->
+    <div class="bg-photo" style="background-image: url('https://asset.gecdesigns.com/img/wallpapers/happy-birthday-wishes-with-elegant-golden-birthday-cake-balloons-and-candles-sr09062507-cover.webp');" aria-hidden="true">
+    </div>
+
+    <!-- Animated floating ribbons / candle flicker -->
+    <div class="decorations">
+        <div class="ribbon ribbon-1"></div>
+        <div class="ribbon ribbon-2"></div>
+        <div class="candle-flicker"></div>
+    </div>
+
+    <!-- Floating Navigation -->
+    <nav class="floating-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-target="hero" aria-label="hero">🎂</button>
+        <button class="nav-item" data-target="gallery" aria-label="gallery">📸</button>
+        <button class="nav-item" data-target="videos" aria-label="videos">🎥</button>
+        <button class="nav-item" data-target="wishes" aria-label="wishes">💝</button>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <section id="hero" class="section active" role="region" aria-labelledby="heroTitle">
+            <div class="hero-content">
+                <div class="badge-spin" aria-hidden="true">
+                    <i class="fas fa-birthday-cake"></i>
+                </div>
+
+                <h1 id="heroTitle" class="main-title">
+                    <span class="title-word">Happy</span>
+                    <span class="title-word">Birthday!</span>
+                    <span class="title-word">Nikhil Kandpal</span>
+                </h1>
+
+                <p class="hero-subtitle">A small surprise for his birthday… please write your best wishes here ❤️🎂</p>
+
+                <div class="cta-buttons">
+                    <button class="btn-primary" onclick="scrollToSection('gallery')">
+                        <i class="fas fa-images"></i> View Memories
+                    </button>
+                    <button class="btn-secondary" onclick="scrollToSection('wishes')">
+                        <i class="fas fa-heart"></i> Send Wish
+                    </button>
+                </div>
+                <img src="https://res.cloudinary.com/dvswzenja/image/upload/v1764173667/n9_ztt3qg.jpg" height="500px" class="hero-image" style="margin-top: 35px;">
+            </div>
+        </section>
+
+        <!-- Photo Gallery Section (now large + beautiful) -->
+        <section id="gallery" class="section" role="region" aria-labelledby="galleryTitle">
+            <div class="section-header">
+                <h2 id="galleryTitle">Memory Gallery</h2>
+                <p>Our favorite moments</p>
+            </div>
+
+            <!-- Big responsive masonry-ish gallery -->
+            <div class="photo-grid" id="photoGrid">
+                <% photos.forEach((photo) => { %>
+                    <figure class="photo-card">
+                        <img src="<%= photo.url %>" alt="<%= photo.caption || 'Memory photo' %>" loading="lazy" />
+                        <figcaption><%= photo.caption %></figcaption>
+                    </figure>
+                <% }); %>
+            </div>
+        </section>
+
+        <!-- Video Carousel Section -->
+<section id="videos" class="section" role="region" aria-labelledby="videosTitle">
+    <div class="section-header">
+        <h2 id="videosTitle">Video Memories</h2>
+    </div>
+
+    <div class="video-carousel-container">
+        <div class="video-carousel" id="videoCarousel">
+            <% videos.forEach(video => { %>
+                <div class="video-item">
+                    <div class="video-wrapper">
+                        <video 
+                            controls
+                            preload="metadata"
+                            playsinline
+                            crossorigin="anonymous"
+                            width="100%"
+                            height="auto"
+                        >
+                            <source src="<%= video.url %>" type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</section>
+
+
+        <!-- Wishes Section -->
+        <section id="wishes" class="section" role="region" aria-labelledby="wishesTitle">
+            <div class="section-header">
+                <h2 id="wishesTitle">Birthday Wishes</h2>
+                <p>Leave a birthday wish</p>
+            </div>
+
+            <div class="wish-form-container">
+                <div class="wish-form-glass">
+                    <h3>Send Your Wish</h3>
+
+                    <div class="form-group">
+                        <label for="nameInput"><i class="fas fa-user"></i> Your Name</label>
+
+                        <!-- Searchable input with datalist (works on mobile & desktop) -->
+                        <div class="name-input-wrap">
+                            <input id="nameInput" list="namesDatalist" placeholder="Start typing or pick your name…" autocomplete="off" />
+                            <datalist id="namesDatalist">
+                                <% validNames.forEach(name => { %>
+                                    <option value="<%= name %>"></option>
+                                <% }); %>
+                            </datalist>
+                        </div>
+                        <small class="hint">Can't find your name? Type it.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wishMessage"><i class="fas fa-envelope"></i> Your Message</label>
+                        <textarea id="wishMessage" placeholder="Write a heartfelt birthday wish (include 'birthday' or 'happy' or an emoji 🎂 🎉)..."></textarea>
+                    </div>
+
+                    <button class="wish-submit-btn" onclick="addWish()">
+                        <i class="fas fa-paper-plane"></i> Send Wish
+                    </button>
+                </div>
+            </div>
+
+            <div class="wishes-display">
+                <div class="wishes-grid" id="wishesGrid">
+                    <% wishes.forEach(wish => { %>
+                        <div class="wish-card" data-wish-id="<%= wish.id %>">
+                            <div class="wish-card-inner">
+                                <div class="wish-header">
+                                    <div class="user-avatar" aria-hidden="true">
+                                        <i class="fas fa-user-circle"></i>
+                                    </div>
+                                    <div class="wish-info">
+                                        <h4 class="wish-name"><%= wish.name %></h4>
+                                        <span class="wish-time"><%= wish.timestamp %></span>
+                                    </div>
+                                </div>
+                                <p class="wish-text"><%= wish.message %></p>
+                                <div class="wish-actions">
+                                    <button class="wish-like" onclick="toggleLike(this)">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Photo Lightbox Modal -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+        <button class="lightbox-close" aria-label="Close" onclick="closeLightbox()">×</button>
+        <img id="lightboxImg" src="" alt="Enlarged photo"/>
+        <div id="lightboxCaption" class="lightbox-caption"></div>
+    </div>
+
+    <!-- Floating Music Player -->
+    <div class="music-player">
+        <button class="music-toggle" onclick="toggleMusic()" aria-label="Toggle music">
+            <i class="fas fa-music"></i>
+        </button>
+        <audio id="bgMusic" loop>
+            <source src="https://res.cloudinary.com/dvswzenja/video/upload/v1764156842/happy-birthday-to-you-piano-version-13976_unvinv.mp3" type="audio/mp3"/>
+        </audio>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
